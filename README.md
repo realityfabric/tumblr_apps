@@ -8,6 +8,7 @@ dependencies installation:
 ```
 > cd /path/to/project/directory
 > mkdir backups
+> mkdir htmls
 > npm install async fs module moment safe-readfile underscore
 > cd node_modules
 > git clone https://github.com/tumblr/tumblr.js.git
@@ -16,7 +17,7 @@ dependencies installation:
 > npm install
 ```
 
-note that dir "./backups" is required for some functions to run
+note that dir "./backups" and "./htmls" are required for some functions to run
 
 you will also need your own api keys
 
