@@ -4,6 +4,8 @@ Applications for blog management
 these functions are meant for serverside manipulation of blog data
 these functions were written and tested with node.js on Ubuntu 14.04
 
+You must have both Node.JS and NPM installed for the installation instructions to work 
+
 dependencies installation:
 ```
 > cd /path/to/project/directory
