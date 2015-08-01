@@ -8,6 +8,8 @@ var t_app = require('./main.js');
 var async = require('async');
 var moment = require('moment');
 
+var client = t_app.client; //lazy
+
 var urls = [];
 var num = 0;
 
