@@ -6,12 +6,9 @@ var safeReadFile = require('safe-readfile');
 var tumblr = require('tumblr');
 var underscore = require('underscore');
 
-var client = tumblr.createClient({
-  consumer_key: consumer_key_here,
-  consumer_secret: consumer_secret_here,
-  token: token_here,
-  token_secret: token_secret_here
-});
+var t_client = require('./t_client.js');
+
+var client = t_client.client;
 
 //returns number of posts made by a blog since last reset
 var checkLimit = function (url, num, cb) {
