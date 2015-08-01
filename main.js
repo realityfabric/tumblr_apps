@@ -3,7 +3,7 @@ var fs = require('fs');
 var module = require('module');
 var moment = require('moment');
 var safeReadFile = require('safe-readfile');
-var tumblr = require('tumblr');
+var tumblr = require('tumblr.js');
 var underscore = require('underscore');
 
 var t_client = require('./t_client.js');

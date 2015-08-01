@@ -15,8 +15,7 @@ dependencies installation:
 > npm install async fs module moment safe-readfile underscore
 > cd node_modules
 > git clone https://github.com/tumblr/tumblr.js.git
-> mv tumblr.js tumblr
-> cd tumblr
+> cd tumblr.js
 > npm install
 ```
 
