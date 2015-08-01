@@ -1,7 +1,7 @@
 var async = require('async');
 var moment = require('moment');
 
-var t_app = require('./tumblr_app.js');
+var t_app = require('./main.js');
 
 
 //array of tags to backup
