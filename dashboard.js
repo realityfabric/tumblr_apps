@@ -102,7 +102,7 @@ var displayPost = function (Post) {
 			break;
 			
 		default:
-			console.log ("Post Type Not Supported Yet");
+			console.log ("Post Type \"" + Post.type + "\" Not Supported Yet");
 			break;
 	}
 	
