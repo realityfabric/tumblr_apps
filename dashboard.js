@@ -95,10 +95,12 @@ var displayPost = function (Post) {
 			break;
 			
 		case "text":
-			if (Post.title !== null && Post.title != undefined && Post.title !== "") {
+			if (Post.title !== null && Post.title !== undefined && Post.title !== "") {
 				console.log (Post.title);
 			}
-			console.log (Post.body);
+			if (Post.body !== null && Post.title !== undefined && Post.body !== "") {
+				console.log (Post.body);
+			}
 			break;
 			
 		default:
