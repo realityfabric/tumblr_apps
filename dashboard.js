@@ -144,6 +144,26 @@ var reblogPost = function (Post) {
 	});
 }
 
+var makePost = function (Post) {
+	prompt.get(['blog', 'title', 'body', 'tags'], function(err, result) {
+		if (err) {
+			return console.log (err);
+		}
+		
+		client.text(result.blog, {  
+			title: result.title,
+			body: result.body,
+			tags: result.tags
+			},
+			function (err, success) {
+				if (err) { return console.log (err); }
+				console.log(success);
+				commandGet(Post);
+			}
+		);
+	});
+}
+
 var viewNotes = function (Post) {
 	for (var i = 0; i < Post.notes.length && i < 10; i++) { //currently only displaying 10 notes to prevent logging 10,000+ notes on popular posts
 		console.log (Post.notes[i].blog_name + " " + Post.notes[i].type + " this"); //this is going to say "blogger like this" if someone liked a post, but i'm not going to put in a switch or anything for this yet bc there are more important things than grammar
@@ -173,6 +193,10 @@ var commandGet = function (Post) {
 				
 			case "notes":
 				viewNotes(Post);
+				break;
+				
+			case "post":
+				makePost(Post);
 				break;
 				
 			case "quit":
