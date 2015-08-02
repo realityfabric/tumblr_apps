@@ -12,6 +12,7 @@ var postarray = [];
 var previds = [];
 
 var initDash = function () {
+	console.log('\033[2J'); //clears the screen
 	count = 0; index = 0; postarray = []; previds = [];
 	client.dashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
 		if (err) {return console.log (err);}
@@ -299,7 +300,6 @@ var commandGet = function (Post) {
 				break;
 				
 			case "refresh":
-				console.log('\033[2J');
 				initDash();
 				break;
 				
