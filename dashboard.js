@@ -193,7 +193,6 @@ var deletePost = function (Post) {
 
 var viewNotes = function (Post) {
 	for (var i = 0; i < Post.notes.length && i < 10; i++) { //currently only displaying 10 notes to prevent logging 10,000+ notes on popular posts
-		console.log (Post.notes[i]);
 		switch (Post.notes[i].type) {
 			case "like":
 				console.log (Post.notes[i].blog_name + " liked this");
