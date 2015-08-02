@@ -178,6 +178,16 @@ var makePost = function (Post) {
 	});
 }
 
+var deletePost = function (Post) {
+	client.deletePost(Post.blog_name, Post.id, function (err, data) {
+		if (err) {
+			return console.log (err);
+		}
+		
+		console.log (data);
+	});
+}
+
 var viewNotes = function (Post) {
 	for (var i = 0; i < Post.notes.length && i < 10; i++) { //currently only displaying 10 notes to prevent logging 10,000+ notes on popular posts
 		console.log (Post.notes[i].blog_name + " " + Post.notes[i].type + " this"); //this is going to say "blogger like this" if someone liked a post, but i'm not going to put in a switch or anything for this yet bc there are more important things than grammar
@@ -215,6 +225,10 @@ var commandGet = function (Post) {
 				
 			case "post":
 				makePost(Post);
+				break;
+				
+			case "delete":
+				deletePost(Post);
 				break;
 				
 			case "refresh":
