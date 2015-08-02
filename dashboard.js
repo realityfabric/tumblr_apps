@@ -147,7 +147,41 @@ var reblogPost = function (Post) {
 			return console.log (err);
 		}
 		
-		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags }, function (err, data) {
+		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags}, function (err, data) {
+			if (err) {
+				return console.log (err);
+			}
+			console.log(data);
+		
+			commandGet(Post);
+		});
+	});
+}
+
+var queuePost = function (Post) {
+	prompt.get(['blog', 'comment', 'tags'], function(err,result) {
+		if (err) {
+			return console.log (err);
+		}
+		
+		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags, state: 'queue' }, function (err, data) {
+			if (err) {
+				return console.log (err);
+			}
+			console.log(data);
+		
+			commandGet(Post);
+		});
+	});
+}
+
+var draftPost = function (Post) {
+	prompt.get(['blog', 'comment', 'tags'], function(err,result) {
+		if (err) {
+			return console.log (err);
+		}
+		
+		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags, state: 'draft' }, function (err, data) {
 			if (err) {
 				return console.log (err);
 			}
@@ -235,6 +269,14 @@ var commandGet = function (Post) {
 				reblogPost(Post);
 				break;
 				
+			case "queue":
+				queuePost(Post);
+				break;
+				
+			case "draft":
+				draftPost(Post);
+				break;
+				
 			case "next":
 				console.log("");
 				dashNext();
@@ -265,6 +307,8 @@ var commandGet = function (Post) {
 				console.log ("\tlike");
 				console.log ("\tunlike");
 				console.log ("\treblog");
+				console.log ("\tqueue");
+				console.log ("\tdraft");
 				console.log ("\tnext");
 				console.log ("\tnotes");
 				console.log ("\tpost");
