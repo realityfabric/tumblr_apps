@@ -130,6 +130,17 @@ var likePost = function (Post) {
 	});
 }
 
+var unlikePost = function (Post) {
+	client.unlike(Post.id, Post.reblog_key, function (err, data) {
+		if (err) {
+			return console.log (err);
+		}
+		
+		console.log ("Post unliked.");
+		commandGet(Post);
+	});
+}
+
 var reblogPost = function (Post) {
 	prompt.get(['blog', 'comment', 'tags'], function(err,result) {
 		if (err) {
@@ -183,6 +194,10 @@ var commandGet = function (Post) {
 		switch (result.command) {
 			case "like":
 				likePost(Post);
+				break;
+				
+			case "unlike":
+				unlikePost (Post);
 				break;
 				
 			case "reblog":
