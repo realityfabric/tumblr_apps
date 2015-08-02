@@ -2,19 +2,22 @@ var prompt = require('prompt');
 var t_app = require('./main');
 var client = t_app.client; //lazy
 
+prompt.start();
+
 var count = 0;
 var index = 0;
 var postarray = [];
 var previds = [];
 
 var initDash = function () {
-	prompt.start();
+	count = 0; index = 0; postarray = []; previds = [];
 	client.dashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
 		if (err) {return console.log (err);}
 		
 		postarray = data.posts;
 		
 		previds.push(postarray[index].id);
+		console.log ("");
 		displayPost (postarray[index]);
 		commandGet(postarray[index]);
 	});
@@ -197,6 +200,10 @@ var commandGet = function (Post) {
 				
 			case "post":
 				makePost(Post);
+				break;
+				
+			case "refresh":
+				initDash();
 				break;
 				
 			case "quit":
