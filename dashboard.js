@@ -1,15 +1,17 @@
+var prompt = require('prompt');
 var t_app = require('./main');
 var client = t_app.client; //lazy
 
 var count = 0;
 var previds = [];
 
-var initDash = function (callback) {
-	client.dashboard({ limit: 1, offset: count++, reblog_info: true, notes_info: true }, function (err, data) {
+var initDash = function () {
+		prompt.start();
+		client.dashboard({ limit: 1, offset: count++, reblog_info: true, notes_info: true }, function (err, data) {
 		if (err) {return console.log (err);}
 		previds.push(data.posts[0].id);
 		displayPost (data.posts[0]);
-		callback();
+		commandGet(data.posts[0]);
 	});
 }
 
@@ -21,6 +23,7 @@ var dashNext = function () {
 		}
 		previds.push(data.posts[0].id);
 		displayPost (data.posts[0]);
+		commandGet();
 	});
 }
 
@@ -72,6 +75,26 @@ var displayPost = function (Post) {
 	
 }
 
-initDash(function() {
-	setInterval(dashNext, 5000); 
-});
+var commandGet = function (Post) {
+	prompt.get(['command'], function(err,result) {
+		if (err) {
+			return console.log(err);
+		}
+		
+		switch (result.command) {
+			case "next":
+				dashNext();
+				break;
+			case "quit":
+				console.log ("Exiting Dashboard");
+				break;
+			default:
+				console.log ("possible commands:");
+				console.log ("\tnext");
+				console.log ("\tquit");
+				break;
+		}
+	});
+}
+
+initDash();
