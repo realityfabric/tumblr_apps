@@ -39,7 +39,7 @@ var displayPost = function (Post) {
 				console.log (Post.caption);
 			}
 			break;
-		case default:
+		default:
 			console.log ("Post Type Not Supported Yet");
 			break;
 	}
