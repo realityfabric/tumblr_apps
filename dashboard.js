@@ -2,6 +2,8 @@ var prompt = require('prompt');
 var t_app = require('./main');
 var client = t_app.client; //lazy
 
+prompt.message = ">";
+
 prompt.start();
 
 var count = 0;
@@ -297,6 +299,7 @@ var commandGet = function (Post) {
 				break;
 				
 			case "refresh":
+				console.log('\033[2J');
 				initDash();
 				break;
 				
