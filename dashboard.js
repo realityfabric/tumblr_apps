@@ -142,7 +142,7 @@ var reblogPost = function (Post) {
 			}
 			console.log(data);
 		
-			commandGet();
+			commandGet(Post);
 		});
 	});
 }
