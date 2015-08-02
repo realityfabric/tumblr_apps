@@ -3,28 +3,39 @@ var t_app = require('./main');
 var client = t_app.client; //lazy
 
 var count = 0;
+var index = 0;
+var postarray = [];
 var previds = [];
 
 var initDash = function () {
-		prompt.start();
-		client.dashboard({ limit: 1, offset: count++, reblog_info: true, notes_info: true }, function (err, data) {
+	prompt.start();
+	client.dashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
 		if (err) {return console.log (err);}
-		previds.push(data.posts[0].id);
-		displayPost (data.posts[0]);
-		commandGet(data.posts[0]);
+		
+		postarray = data.posts;
+		
+		previds.push(postarray[index].id);
+		displayPost (postarray[index]);
+		commandGet(postarray[index]);
 	});
 }
 
 var dashNext = function () {
-	client.dashboard({ limit: 1, offset: count++, reblog_info: true, notes_info: true }, function (err, data) {
-		if (err) { return console.log (err); }
-		if (previds.indexOf(data.posts[0].id) > -1) { // if the post returned by data has already been seen, skip to the next post until the post returned is new
-			dashNext();
-		}
-		previds.push(data.posts[0].id);
-		displayPost (data.posts[0]);
-		commandGet(data.posts[0]);
-	});
+	index++; count++;
+	if (index === 20) { //get the next postarray from the server
+		client.dashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
+			index = 0;
+			postarray = data.posts;
+			
+			previds.push(postarray[index].id);
+			displayPost(postarray[index]);
+			commandGet(postarray[index]);
+		});
+	} else { // move to the next post in postarray
+			previds.push(postarray[index].id);
+			displayPost(postarray[index]);
+			commandGet(postarray[index]);
+	}
 }
 
 var displayPost = function (Post) {
