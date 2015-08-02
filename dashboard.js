@@ -47,6 +47,15 @@ var displayPost = function (Post) {
 	if (Post.reblogged_from_id !== undefined) {
 		console.log ("source: " + Post.reblogged_root_name);
 	}
+	if (Post.tags.length !== 0) { //only post tags if they exist
+		console.log ("tagged: " + Post.tags);
+	}
+	if (Post.liked === true) {
+		console.log (Post.note_count + " notes -- (liked)");
+	} else {
+		console.log (Post.note_count + " notes");
+	}
+	
 }
 
 initDash();
