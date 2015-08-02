@@ -23,7 +23,7 @@ var dashNext = function () {
 		}
 		previds.push(data.posts[0].id);
 		displayPost (data.posts[0]);
-		commandGet();
+		commandGet(data.posts[0]);
 	});
 }
 
@@ -102,8 +102,18 @@ var displayPost = function (Post) {
 		console.log (Post.note_count + " notes -- (liked)");
 	} else {
 		console.log (Post.note_count + " notes");
-	}
-	
+	}	
+}
+
+var likePost = function (Post) {
+	client.like(Post.id, Post.reblog_key, function (err, data) {
+		if (err) {
+			return console.log (err);
+		}
+		
+		console.log ("Post liked!");
+		commandGet(Post);
+	});
 }
 
 var commandGet = function (Post) {
@@ -113,13 +123,19 @@ var commandGet = function (Post) {
 		}
 		
 		switch (result.command) {
+			case "like":
+				likePost(Post);
+				break;
+				
 			case "next":
 				console.log("");
 				dashNext();
 				break;
+				
 			case "quit":
 				console.log ("Exiting Dashboard");
 				break;
+				
 			default:
 				console.log ("possible commands:");
 				console.log ("\tnext");
