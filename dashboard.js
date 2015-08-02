@@ -127,6 +127,23 @@ var likePost = function (Post) {
 	});
 }
 
+var reblogPost = function (Post) {
+	prompt.get(['blog', 'comment', 'tags'], function(err,result) {
+		if (err) {
+			return console.log (err);
+		}
+		
+		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags }, function (err, data) {
+			if (err) {
+				return console.log (err);
+			}
+			console.log(data);
+		
+			commandGet();
+		});
+	});
+}
+
 var viewNotes = function (Post) {
 	for (var i = 0; i < Post.notes.length && i < 10; i++) { //currently only displaying 10 notes to prevent logging 10,000+ notes on popular posts
 		console.log (Post.notes[i].blog_name + " " + Post.notes[i].type + " this"); //this is going to say "blogger like this" if someone liked a post, but i'm not going to put in a switch or anything for this yet bc there are more important things than grammar
@@ -145,6 +162,10 @@ var commandGet = function (Post) {
 				likePost(Post);
 				break;
 				
+			case "reblog":
+				reblogPost(Post);
+				break;
+				
 			case "next":
 				console.log("");
 				dashNext();
@@ -161,6 +182,7 @@ var commandGet = function (Post) {
 			default:
 				console.log ("possible commands:");
 				console.log ("\tlike");
+				console.log ("\treblog");
 				console.log ("\tnext");
 				console.log ("\tnotes");
 				console.log ("\tquit");
