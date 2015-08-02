@@ -1,11 +1,25 @@
 var t_app = require('./main');
 var client = t_app.client; //lazy
 
-var initDash = function () {
-	// Make the request
-	client.dashboard({ limit: 1, offset: 0, reblog_info: true, notes_info: true }, function (err, data) {
+var count = 0;
+var previds = [];
+
+var initDash = function (callback) {
+	client.dashboard({ limit: 1, offset: count++, reblog_info: true, notes_info: true }, function (err, data) {
 		if (err) {return console.log (err);}
-		
+		previds.push(data.posts[0].id);
+		displayPost (data.posts[0]);
+		callback();
+	});
+}
+
+var dashNext = function () {
+	client.dashboard({ limit: 1, offset: count++, reblog_info: true, notes_info: true }, function (err, data) {
+		if (err) { return console.log (err); }
+		if (previds.indexOf(data.posts[0].id) > -1) { // if the post returned by data has already been seen, skip to the next post until the post returned is new
+			dashNext();
+		}
+		previds.push(data.posts[0].id);
 		displayPost (data.posts[0]);
 	});
 }
@@ -58,4 +72,6 @@ var displayPost = function (Post) {
 	
 }
 
-initDash();
+initDash(function() {
+	setInterval(dashNext, 5000); 
+});
