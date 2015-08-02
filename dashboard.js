@@ -102,6 +102,7 @@ var displayPost = function (Post) {
 				console.log (Post.title);
 			}
 			if (Post.body !== null && Post.title !== undefined && Post.body !== "") {
+				console.log (parseHTML(Post.body));
 				console.log (Post.body);
 			}
 			break;
@@ -325,6 +326,58 @@ var commandGet = function (Post) {
 				break;
 		}
 	});
+}
+
+var parseHTML = function (str) {
+	while (str.indexOf("\n") > -1) {
+		str = str.replace ("\n", "");
+	}
+	while (str.indexOf("<p>") > -1) {
+		str = str.replace ("<p>","");
+	}
+	while (str.indexOf("</p>") > -1) {
+		if (str.indexOf("</p>") >= (str.length - "</p>".length)) {
+			str = str.replace ("</p>","");
+		} else {
+			str = str.replace("</p>","\n");
+		}
+	}
+	while (str.indexOf("<blockquote>") > -1) {
+		str = str.replace("<blockquote>", ">");
+	}
+	while (str.indexOf("</blockquote>") > -1) {
+		str = str.replace("</blockquote>", ">\n");
+	}
+	while (str.indexOf("<li>") > -1) {
+		str = str.replace("<li>", "\n  -");
+	}
+	while (str.indexOf("</li>") > -1) {
+		str = str.replace("</li>", "");
+	}
+	while (str.indexOf("<i>") > -1) {
+		str = str.replace("<i>", "/");
+	}
+	while (str.indexOf("</i>") > -1) {
+		str = str.replace("</i>", "/");
+	}
+	while (str.indexOf("<br/>") > -1) {
+		str = str.replace ("<br/>", "\n");
+	}
+	while (str.indexOf("<ol>") > -1) {
+		str = str.replace ("<ol>", "");
+	}
+	while (str.indexOf("</ol>") > -1) {
+		str = str.replace ("</ol>", "");
+	}
+	while (str.indexOf("&rsquo;") > -1) {
+		str = str.replace("&rsquo;", "'");
+	}
+	while (str.indexOf("&hellip;") > -1) {
+		str = str.replace("&hellip;", "...");
+	}
+
+	
+	return str;
 }
 
 initDash();
