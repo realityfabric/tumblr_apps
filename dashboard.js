@@ -116,6 +116,13 @@ var likePost = function (Post) {
 	});
 }
 
+var viewNotes = function (Post) {
+	for (var i = 0; i < Post.notes.length && i < 10; i++) { //currently only displaying 10 notes to prevent logging 10,000+ notes on popular posts
+		console.log (Post.notes[i].blog_name + " " + Post.notes[i].type + " this"); //this is going to say "blogger like this" if someone liked a post, but i'm not going to put in a switch or anything for this yet bc there are more important things than grammar
+	}
+	commandGet(Post);
+}
+
 var commandGet = function (Post) {
 	prompt.get(['command'], function(err,result) {
 		if (err) {
@@ -132,14 +139,22 @@ var commandGet = function (Post) {
 				dashNext();
 				break;
 				
+			case "notes":
+				viewNotes(Post);
+				break;
+				
 			case "quit":
 				console.log ("Exiting Dashboard");
 				break;
 				
 			default:
 				console.log ("possible commands:");
+				console.log ("\tlike");
 				console.log ("\tnext");
+				console.log ("\tnotes");
 				console.log ("\tquit");
+				
+				commandGet(Post);
 				break;
 		}
 	});
