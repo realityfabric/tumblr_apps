@@ -161,30 +161,33 @@ var reblogPost = function (Post) {
 var makePost = function (Post) {
 	prompt.get(['blog', 'title', 'body', 'tags'], function(err, result) {
 		if (err) {
-			return console.log (err);
+			console.log (err);
+			commandGet(Post);
+		} else {
+			client.text(result.blog, {  
+				title: result.title,
+				body: result.body,
+				tags: result.tags
+				},
+				function (err, success) {
+					if (err) { return console.log (err); }
+					console.log(success);
+					commandGet(Post);
+				}
+			);
 		}
-		
-		client.text(result.blog, {  
-			title: result.title,
-			body: result.body,
-			tags: result.tags
-			},
-			function (err, success) {
-				if (err) { return console.log (err); }
-				console.log(success);
-				commandGet(Post);
-			}
-		);
 	});
 }
 
 var deletePost = function (Post) {
 	client.deletePost(Post.blog_name, Post.id, function (err, data) {
 		if (err) {
-			return console.log (err);
+			console.log (err);
+			commandGet(Post);
+		} else {
+			console.log (data);
+			commandGet(Post);
 		}
-		
-		console.log (data);
 	});
 }
 
@@ -242,9 +245,13 @@ var commandGet = function (Post) {
 			default:
 				console.log ("possible commands:");
 				console.log ("\tlike");
+				console.log ("\tunlike");
 				console.log ("\treblog");
 				console.log ("\tnext");
 				console.log ("\tnotes");
+				console.log ("\tpost");
+				console.log ("\tdelete");
+				console.log ("\trefresh");
 				console.log ("\tquit");
 				
 				commandGet(Post);
