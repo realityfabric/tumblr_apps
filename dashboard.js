@@ -36,13 +36,29 @@ var displayPost = function (Post) {
 		}
 	
 	switch (Post.type) {
-		case "text":
+		case "answer":
+			console.log (Post.asking_name + " asked:");
+			console.log (Post.question);
+			console.log (Post.answer); //is there a way to see who answered the question? might need a workaround
+			break;
+			
+		case "chat":
 			if (Post.title !== null && Post.title != undefined && Post.title !== "") {
 				console.log (Post.title);
 			}
 			console.log (Post.body);
-			
 			break;
+		
+		case "link": //i'm not really sure how this will display
+				console.log (Post.title);
+				console.log (Post.url);
+				console.log (Post.author);
+				console.log (Post.excerpt);
+				console.log (Post.publisher);
+				console.log ("Photos not supported at this time"); //i should probably add this
+				console.log (Post.description);
+				break;
+				
 		case "photo":
 			console.log ("Photo Post");
 			for (var i = 0; i < Post.photos.length; i++) {
@@ -56,6 +72,21 @@ var displayPost = function (Post) {
 				console.log (Post.caption);
 			}
 			break;
+			
+		case "quote":
+			console.log (Post.text);
+			if (Post.source !== null && Post.source !== undefined && Post.source !== "") {
+				console.log (Post.source);
+			}
+			break;
+			
+		case "text":
+			if (Post.title !== null && Post.title != undefined && Post.title !== "") {
+				console.log (Post.title);
+			}
+			console.log (Post.body);
+			break;
+			
 		default:
 			console.log ("Post Type Not Supported Yet");
 			break;
@@ -83,6 +114,7 @@ var commandGet = function (Post) {
 		
 		switch (result.command) {
 			case "next":
+				console.log("");
 				dashNext();
 				break;
 			case "quit":
