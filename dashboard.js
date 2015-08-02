@@ -193,7 +193,26 @@ var deletePost = function (Post) {
 
 var viewNotes = function (Post) {
 	for (var i = 0; i < Post.notes.length && i < 10; i++) { //currently only displaying 10 notes to prevent logging 10,000+ notes on popular posts
-		console.log (Post.notes[i].blog_name + " " + Post.notes[i].type + " this"); //this is going to say "blogger like this" if someone liked a post, but i'm not going to put in a switch or anything for this yet bc there are more important things than grammar
+		console.log (Post.notes[i]);
+		switch (Post.notes[i].type) {
+			case "like":
+				console.log (Post.notes[i].blog_name + " liked this");
+				break;
+			
+			case "reblog":
+				if (Post.notes[i].added_text !== undefined && Post.notes[i].added_text !== null && Post.notes[i].added_text !== "") {
+					console.log (Post.notes[i].blog_name + " reblogged this and said " + Post.notes[i].added_text);
+				} else {
+					console.log (Post.notes[i].blog_name + " reblogged this");
+				}
+				break;
+				
+			case "reply":
+				console.log (Post.notes[i].blog_name + " replied: " + Post.notes[i].reply_text);
+			default:
+				console.log (Post.notes[i].blog_name + " " + Post.notes[i].type + " this"); //this is going to say "blogger like this" if someone liked a post, but i'm not going to put in a switch or anything for this yet bc there are more important things than grammar
+				break;
+		}
 	}
 	commandGet(Post);
 }
