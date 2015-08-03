@@ -145,19 +145,24 @@ var displayPost = function (Post, callback) {
 									
 						if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {	
 							console.log (j + " of " + Post.photos.length + " | caption: " + Post.photos[i].caption + " / url: " + photo_url);
-							if (photo_url.indexOf(".gif") > -1) {
-								displayGif(filename, function () { whilst_back(); });
-							} else {
-								displayImage(filename, function () { whilst_back(); });
-							}
 						} else {
 							console.log (j + " of " + Post.photos.length + " | url: " + photo_url);
-							if (photo_url.indexOf(".gif") > -1) {
-								displayGif(filename, function () { whilst_back(); });
+						}
+						
+						if (photo_url.indexOf(".gif") > -1) {
+							displayGif(filename, function () { whilst_back(); });
+						} else {
+							if (Post.photos.length > 1) {
+								console.log ("Photo Set");
+								var setArray = [];
+								for (var x = 0; x < Post.photos.length; x++) {
+									setArray.push("./cache/" + Post.id + "_" + x);
+								}
+								displayImageSet(setArray, function () { j = Post.photos.length; whilst_back(); });
 							} else {
 								displayImage(filename, function () { whilst_back(); });
 							}
-						}
+						}						
 					},
 					function (err) {
 						if (err) {
@@ -482,9 +487,9 @@ var displayImage = function (filename, callback) { //uses imageMagick on my mach
 }
 
 var displayImageSet = function (fileArray, callback) {
-	fileArray.push("montage");
+	fileArray.push("./cache/montage");
 	var disp = child_process.spawn("montage", fileArray);
-	disp.on('close', callback);
+	disp.on('close', function () { displayImage("./cache/montage", callback);});
 }
 
 var displayGif = function (filename, callback) {
