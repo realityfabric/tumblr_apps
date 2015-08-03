@@ -11,7 +11,7 @@ dependencies installation:
 > cd /path/to/project/directory
 > mkdir backups htmls cache
 > touch t_client.js
-> npm install async fs module moment safe-readfile underscore prompt html-to-text
+> npm install async fs module moment safe-readfile underscore prompt html-to-text request
 > cd node_modules
 > git clone https://github.com/tumblr/tumblr.js.git
 > cd tumblr.js
