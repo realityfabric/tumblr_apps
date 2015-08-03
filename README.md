@@ -11,6 +11,7 @@ dependencies installation:
 > cd /path/to/project/directory
 > mkdir backups
 > mkdir htmls
+> mkdir cache
 > touch t_client.js
 > npm install async fs module moment safe-readfile underscore prompt html-to-text
 > cd node_modules
