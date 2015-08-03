@@ -1,3 +1,4 @@
+var async = require('async');
 var fs = require('fs');
 var request = require('request');
 var child_process = require('child_process');
@@ -46,7 +47,6 @@ var dashNext = function () {
 }
 
 var displayPost = function (Post, callback) {
-	
 	if (Post.reblogged_from_id !== undefined) { //the post was reblogged
 			console.log (Post.blog_name + " reblogged this from " + Post.reblogged_from_name);
 		} else { //this is an original post
@@ -83,14 +83,31 @@ var displayPost = function (Post, callback) {
 				var photo_url = Post.photos[i].alt_sizes[0].url;
 				var filename = Post.id + "_" + i;
 				if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {
-					download (photo_url, filename, function() { console.log ("caption: " + Post.photos[i].caption + " / url: " + photo_url)});
+					download (
+						photo_url, 
+						filename, 
+						function() { 
+							console.log ("caption: " + Post.photos[i].caption + " / url: " + photo_url);
+							if (photo_url.indexOf(".gif") > -1) {
+								displayGif(filename, function () {console.log ("image displayed"); });
+							} else {
+								displayImage(filename, function () { console.log ("image displayed"); });
+							}
+						}
+					);
 				} else {
-					download (photo_url, filename, function () { console.log ("url: " + photo_url)});
-				}
-				if (photo_url.indexOf(".gif") > -1) {
-					displayGif(filename);
-				} else {
-					displayImage(filename);
+					download (
+						photo_url, 
+						filename, 
+						function () { 
+							console.log ("url: " + photo_url);
+							if (photo_url.indexOf(".gif") > -1) {
+								displayGif(filename, function () {console.log ("image displayed"); });
+							} else {
+								displayImage(filename, function () { console.log ("image displayed"); });
+							}
+						}
+					);
 				}
 			}
 			if (Post.caption !== "" && Post.caption != undefined) {
@@ -118,7 +135,7 @@ var displayPost = function (Post, callback) {
 			console.log ("Post Type \"" + Post.type + "\" Not Supported Yet");
 			break;
 	}
-	
+		
 	if (Post.reblogged_from_id !== undefined) {
 		console.log ("source: " + Post.reblogged_root_name);
 	}
@@ -129,8 +146,8 @@ var displayPost = function (Post, callback) {
 		console.log (Post.note_count + " notes -- (liked)");
 	} else {
 		console.log (Post.note_count + " notes");
-	}	
-	
+	}
+
 	callback();
 }
 
@@ -401,12 +418,14 @@ var download = function(uri, filename, callback){
   });
 };
 
-var displayImage = function (filename) { //uses imageMagick on my machine
-	child_process.spawn("display", [filename]);
+var displayImage = function (filename, callback) { //uses imageMagick on my machine
+	var disp = child_process.spawn("display", [filename]);
+	disp.on('close', callback);
 }
 
-var displayGif = function (filename) {
-	child_process.spawn("animate", [filename]);
+var displayGif = function (filename, callback) {
+	var disp = child_process.spawn("animate", [filename]);
+	disp.on('close', callback);
 }
 
 initDash();
