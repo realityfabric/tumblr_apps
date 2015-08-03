@@ -38,12 +38,20 @@ var dashNext = function () {
 			index = 0;
 			postarray = data.posts;
 			
-			previds.push(postarray[index].id);
-			displayPost(postarray[index], function () { commandGet(postarray[index]); });
+			if (previds.indexOf(postarray[index].id) > -1) {
+				dashNext();
+			} else {
+				previds.push(postarray[index].id);
+				displayPost(postarray[index], function () { commandGet(postarray[index]); });
+			}
 		});
 	} else { // move to the next post in postarray
+		if (previds.indexOf(postarray[index].id) > -1) {
+			dashNext();
+		} else {
 			previds.push(postarray[index].id);
 			displayPost(postarray[index], function () { commandGet(postarray[index]); });
+		}
 	}
 }
 
