@@ -9,9 +9,7 @@ You must have both Node.JS and NPM installed for the installation instructions t
 dependencies installation:
 ```
 > cd /path/to/project/directory
-> mkdir backups
-> mkdir htmls
-> mkdir cache
+> mkdir backups htmls cache
 > touch t_client.js
 > npm install async fs module moment safe-readfile underscore prompt html-to-text
 > cd node_modules
