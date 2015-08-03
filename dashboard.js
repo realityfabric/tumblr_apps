@@ -396,7 +396,11 @@ var download = function(uri, filename, callback){
 };
 
 var displayImage = function (filename) { //uses imageMagick on my machine
-	child_process.spawn("display", [filename])
+	child_process.spawn("display", [filename]);
+}
+
+var displayGif = function (filename) {
+	child_process.spawn("animate", [filename]);
 }
 
 initDash();
