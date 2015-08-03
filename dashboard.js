@@ -1,5 +1,6 @@
 var async = require('async');
 var fs = require('fs');
+var safeReadFile = require('safe-readfile');
 var request = require('request');
 var child_process = require('child_process');
 var prompt = require('prompt');
@@ -80,37 +81,51 @@ var displayPost = function (Post, callback) {
 		case "photo":
 			console.log ("Photo Post");
 			var i = 0;
+			var j = 0;
 			async.whilst (
-				function () { return i < Post.photos.length; },
+				function () {
+					i = j;
+					return j++ < Post.photos.length; 
+				},
 				function (whilst_back) {
 					var photo_url = Post.photos[i].alt_sizes[0].url;
 					var filename = "./cache/" + Post.id + "_" + i;
-					if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {
-						download (
-							photo_url, 
-							filename, 
-							function() { 
-								console.log ("caption: " + Post.photos[i].caption + " / url: " + photo_url);
-								if (photo_url.indexOf(".gif") > -1) {
-									displayGif(filename, function () {console.log ("image displayed"); });
-								} else {
-									displayImage(filename, function () { console.log ("image displayed"); });
+					var filetest = safeReadFile.readFileSync(filename);
+					if (filetest === undefined || filetest === "") {
+						if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {
+							download (
+								photo_url, 
+								filename, 
+								function() { 
+									console.log ("caption: " + Post.photos[i].caption + " / url: " + photo_url);
+									if (photo_url.indexOf(".gif") > -1) {
+										displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
+									} else {
+										displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+									}
 								}
-							}
-						);
+							);
+						} else {
+							download (
+								photo_url, 
+								filename, 
+								function () { 
+									console.log ("url: " + photo_url);
+									if (photo_url.indexOf(".gif") > -1) {
+										displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
+									} else {
+										displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+									}
+								}
+							);
+						}
 					} else {
-						download (
-							photo_url, 
-							filename, 
-							function () { 
-								console.log ("url: " + photo_url);
-								if (photo_url.indexOf(".gif") > -1) {
-									displayGif(filename, function () {console.log ("image displayed"); });
-								} else {
-									displayImage(filename, function () { console.log ("image displayed"); });
-								}
-							}
-						);
+						console.log ("url: " + photo_url);
+						if (photo_url.indexOf(".gif") > -1) {
+							displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
+						} else {
+							displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+						}
 					}
 					
 				},
