@@ -25,8 +25,7 @@ var initDash = function () {
 		
 		previds.push(postarray[index].id);
 		console.log ("");
-		displayPost (postarray[index]);
-		commandGet(postarray[index]);
+		displayPost(postarray[index], function () { commandGet(postarray[index]); });
 	});
 }
 
@@ -38,17 +37,15 @@ var dashNext = function () {
 			postarray = data.posts;
 			
 			previds.push(postarray[index].id);
-			displayPost(postarray[index]);
-			commandGet(postarray[index]);
+			displayPost(postarray[index], function () { commandGet(postarray[index]); });
 		});
 	} else { // move to the next post in postarray
 			previds.push(postarray[index].id);
-			displayPost(postarray[index]);
-			commandGet(postarray[index]);
+			displayPost(postarray[index], function () { commandGet(postarray[index]); });
 	}
 }
 
-var displayPost = function (Post) {
+var displayPost = function (Post, callback) {
 	
 	if (Post.reblogged_from_id !== undefined) { //the post was reblogged
 			console.log (Post.blog_name + " reblogged this from " + Post.reblogged_from_name);
@@ -83,10 +80,17 @@ var displayPost = function (Post) {
 		case "photo":
 			console.log ("Photo Post");
 			for (var i = 0; i < Post.photos.length; i++) {
+				var photo_url = Post.photos[i].alt_sizes[0].url;
+				var filename = Post.id + "_" + i;
 				if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {
-					console.log ("caption: " + Post.photos[i].caption + " / url: " + Post.photos[i].alt_sizes[0].url);
+					download (photo_url, filename, function() { console.log ("caption: " + Post.photos[i].caption + " / url: " + photo_url)});
 				} else {
-					console.log ("url: " + Post.photos[i].alt_sizes[0].url);
+					download (photo_url, filename, function () { console.log ("url: " + photo_url)});
+				}
+				if (photo_url.indexOf(".gif") > -1) {
+					displayGif(filename);
+				} else {
+					displayImage(filename);
 				}
 			}
 			if (Post.caption !== "" && Post.caption != undefined) {
@@ -126,6 +130,8 @@ var displayPost = function (Post) {
 	} else {
 		console.log (Post.note_count + " notes");
 	}	
+	
+	callback();
 }
 
 var likePost = function (Post) {
