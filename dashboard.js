@@ -90,57 +90,88 @@ var displayPost = function (Post, callback) {
 			console.log ("Photo Post");
 			var i = 0;
 			var j = 0;
-			async.whilst (
-				function () {
-					i = j;
-					return j++ < Post.photos.length; 
-				},
-				function (whilst_back) {
-					var photo_url = Post.photos[i].alt_sizes[0].url;
-					var filename = "./cache/" + Post.id + "_" + i;
-					var filetest = safeReadFile.readFileSync(filename);
-					if (filetest === undefined || filetest === "") {
-						if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {
-							download (
-								photo_url, 
-								filename, 
-								function() { 
-									console.log ("caption: " + Post.photos[i].caption + " / url: " + photo_url);
-									if (photo_url.indexOf(".gif") > -1) {
-										displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
-									} else {
-										displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+			async.series([
+			function (series_back) {
+				async.whilst (
+					function () {
+						i = j;
+						return j++ < Post.photos.length; 
+					},
+					function (whilst_back) {
+						var photo_url = Post.photos[i].alt_sizes[0].url;
+						var filename = "./cache/" + Post.id + "_" + i;
+						var filetest = safeReadFile.readFileSync(filename);
+						if (filetest === undefined || filetest === "") {
+							if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {
+								download (
+									photo_url, 
+									filename, 
+									function() { 
+										console.log ("Downloaded " + j + " of " + Post.photos.length);
+										whilst_back();
 									}
-								}
-							);
-						} else {
-							download (
-								photo_url, 
-								filename, 
-								function () { 
-									console.log ("url: " + photo_url);
-									if (photo_url.indexOf(".gif") > -1) {
-										displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
-									} else {
-										displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+								);
+							} else {
+								download (
+									photo_url, 
+									filename, 
+									function () { 
+										console.log ("Downloaded " + j + " of " + Post.photos.length);
+										whilst_back();
 									}
-								}
-							);
+								);
+							}
+						} else {							
+							whilst_back();
 						}
-					} else {
-						console.log ("url: " + photo_url);
-						if (photo_url.indexOf(".gif") > -1) {
-							displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
-						} else {
-							displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
-						}
+						
+					},
+					function (err) {
+						console.log ("All images downloaded");
+						series_back (null, 'one');
 					}
-					
-				},
-				function (err) {
-					console.log ("All images downloaded and displayed");
+				);
+			},
+			function (series_back) {
+				var i = 0, j = 0;
+				async.whilst (
+					function () {
+						i = j;
+						return j++ < Post.photos.length;
+					},
+					function (whilst_back) {
+						var photo_url = Post.photos[i].alt_sizes[0].url;
+						var filename = "./cache/" + Post.id + "_" + i;
+									
+						if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {	
+							console.log (j + " of " + Post.photos.length + " | caption: " + Post.photos[i].caption + " / url: " + photo_url);
+							if (photo_url.indexOf(".gif") > -1) {
+								displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
+							} else {
+								displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+							}
+						} else {
+							console.log (j + " of " + Post.photos.length + " | url: " + photo_url);
+							if (photo_url.indexOf(".gif") > -1) {
+								displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
+							} else {
+								displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+							}
+						}
+					},
+					function (err) {
+						if (err) {
+							console.log (err);
+						}
+						series_back (null, 'two');
+					}
+				);
+			}],
+			function (err, results) {
+				if (err) {
+					console.log (err);
 				}
-			);
+			});
 			if (Post.caption !== "" && Post.caption != undefined) {
 				console.log (htmlToText.fromString(Post.caption));
 			}
@@ -451,6 +482,12 @@ var download = function(uri, filename, callback){
 
 var displayImage = function (filename, callback) { //uses imageMagick on my machine
 	var disp = child_process.spawn("display", [filename]);
+	disp.on('close', callback);
+}
+
+var displayImageSet = function (fileArray, callback) {
+	fileArray.push("montage");
+	var disp = child_process.spawn("montage", fileArray);
 	disp.on('close', callback);
 }
 
