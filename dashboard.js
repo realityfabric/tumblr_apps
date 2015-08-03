@@ -146,16 +146,16 @@ var displayPost = function (Post, callback) {
 						if (Post.photos[i].caption !== "" && Post.photos[i].caption !== undefined) {	
 							console.log (j + " of " + Post.photos.length + " | caption: " + Post.photos[i].caption + " / url: " + photo_url);
 							if (photo_url.indexOf(".gif") > -1) {
-								displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
+								displayGif(filename, function () { whilst_back(); });
 							} else {
-								displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+								displayImage(filename, function () { whilst_back(); });
 							}
 						} else {
 							console.log (j + " of " + Post.photos.length + " | url: " + photo_url);
 							if (photo_url.indexOf(".gif") > -1) {
-								displayGif(filename, function () {console.log ("image displayed"); whilst_back(); });
+								displayGif(filename, function () { whilst_back(); });
 							} else {
-								displayImage(filename, function () { console.log ("image displayed"); whilst_back(); });
+								displayImage(filename, function () { whilst_back(); });
 							}
 						}
 					},
