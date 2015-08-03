@@ -1,3 +1,6 @@
+var fs = require('fs');
+var request = require('request');
+var child_process = require('child_process');
 var prompt = require('prompt');
 var htmlToText = require('html-to-text');
 var t_app = require('./main');
@@ -377,6 +380,23 @@ var parseHTML = function (str) {
 	}
 	
 	return str;
+}
+
+//http://stackoverflow.com/questions/12740659/downloading-images-with-node-js/20980188#20980188
+var download = function(uri, filename, callback){
+
+  request.head(uri, function(err, res, body){
+
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+
+    var r = request(uri).pipe(fs.createWriteStream(filename));
+    r.on('close', callback);
+  });
+};
+
+var displayImage = function (filename) { //uses imageMagick on my machine
+	child_process.spawn("display", [filename])
 }
 
 initDash();
