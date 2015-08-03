@@ -18,6 +18,11 @@ dependencies installation:
 > npm install
 ```
 
+if you just want to copy and paste this into the terminal all at once, create the project directory and then:
+```
+> mkdir backups htmls cache; touch t_client.js; npm install async fs module moment safe-readfile underscore prompt html-to-text request; cd node_modules; git clone https://github.com/tumblr/tumblr.js.git; cd tumblr.js; npm install
+```
+
 note that dir "./backups" and "./htmls" are required for some functions to run
 
 you will also need your own api keys:
