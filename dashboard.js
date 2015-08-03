@@ -130,7 +130,7 @@ var displayPost = function (Post, callback) {
 					
 				},
 				function (err) {
-					
+					console.log ("All images downloaded and displayed");
 				}
 			);
 			if (Post.caption !== "" && Post.caption != undefined) {
