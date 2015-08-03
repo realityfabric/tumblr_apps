@@ -12,7 +12,7 @@ dependencies installation:
 > mkdir backups
 > mkdir htmls
 > touch t_client.js
-> npm install async fs module moment safe-readfile underscore
+> npm install async fs module moment safe-readfile underscore prompt html-to-text
 > cd node_modules
 > git clone https://github.com/tumblr/tumblr.js.git
 > cd tumblr.js

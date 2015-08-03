@@ -1,4 +1,5 @@
 var prompt = require('prompt');
+var htmlToText = require('html-to-text');
 var t_app = require('./main');
 var client = t_app.client; //lazy
 
@@ -56,7 +57,7 @@ var displayPost = function (Post) {
 		case "answer":
 			console.log (Post.asking_name + " asked:");
 			console.log (Post.question);
-			console.log (Post.answer); //is there a way to see who answered the question? might need a workaround
+			console.log (htmlToText.fromString(Post.answer)); //is there a way to see who answered the question? might need a workaround
 			break;
 			
 		case "chat":
@@ -86,14 +87,14 @@ var displayPost = function (Post) {
 				}
 			}
 			if (Post.caption !== "" && Post.caption != undefined) {
-				console.log (Post.caption);
+				console.log (htmlToText.fromString(Post.caption));
 			}
 			break;
 			
 		case "quote":
 			console.log (Post.text);
 			if (Post.source !== null && Post.source !== undefined && Post.source !== "") {
-				console.log (Post.source);
+				console.log (htmlToText.fromString(Post.source));
 			}
 			break;
 			
@@ -102,8 +103,7 @@ var displayPost = function (Post) {
 				console.log (Post.title);
 			}
 			if (Post.body !== null && Post.title !== undefined && Post.body !== "") {
-				console.log (parseHTML(Post.body));
-				console.log (Post.body);
+				console.log (htmlToText.fromString(Post.body));
 			}
 			break;
 			
@@ -375,7 +375,6 @@ var parseHTML = function (str) {
 	while (str.indexOf("&hellip;") > -1) {
 		str = str.replace("&hellip;", "...");
 	}
-
 	
 	return str;
 }
