@@ -43,5 +43,5 @@ exports.client = client;
 ```
 replace "consumer_key_here", "consumer_secret_here", "token_here", and "token_secret_here" with their respective keys
 
-I'm mostly just putting this code here so I don't accidentally delete it all (again)
+As far as I can tell, the Tumblr JavaScript API only allows you to offset up to 250 posts. All offsets more than 250 are treated as an offset of 0. I don't know why they do this, but it means that dashboard.js is only capable of retrieving posts 250 deep into the dashboard (so you might only be able to traverse a fraction of that many posts before being looped back to the first 20 posts over and over again. the exact number of posts you'll be able to get through depends on how quickly people you follow are posting.).
  
