@@ -17,6 +17,8 @@ var index = 0;
 var postarray = [];
 var previds = [];
 
+var userInfo = {};
+
 var initDash = function () {
 	console.log('\033[2J'); //clears the screen
 	count = 0; index = 0; postarray = []; previds = [];
@@ -53,6 +55,12 @@ var dashNext = function () {
 			displayPost(postarray[index], function () { commandGet(postarray[index]); });
 		}
 	}
+}
+
+var getInfo = function () {
+	client.userInfo(function (err, data) {
+		userInfo = data.user;
+	});
 }
 
 var displayPost = function (Post, callback) {
