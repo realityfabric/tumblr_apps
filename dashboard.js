@@ -17,7 +17,8 @@ var index = 0;
 var postarray = [];
 var previds = [];
 
-var userInfo = {};
+var userInfo;
+var following = [];
 
 var initDash = function () {
 	console.log('\033[2J'); //clears the screen
@@ -61,6 +62,59 @@ var getInfo = function () {
 	client.userInfo(function (err, data) {
 		userInfo = data.user;
 	});
+}
+
+var getFollowing = function () {
+	var total_blogs;
+	var following_index = 0;
+	
+	async.series ([
+		function (series_back) {
+			client.following({ limit: 20, offset: 0 }, function (err, data) {
+				if (err) {
+					return console.log (err);
+				}
+				total_blogs = data.total_blogs;
+				for (var i = 0; i < data.blogs.length; i++) {
+					following.push(data.blogs[i]);
+					following_index++;
+				}
+				series_back(null, 'initial get');
+			});
+		},
+		function (series_back) {
+			async.whilst (
+				function () { 
+					return following_index < total_blogs; 
+				},
+				function (whilst_back) {
+					client.following({ limit: 20, offset: following_index }, function (err, data) {
+						if (err) {
+							console.log (err);
+						}
+						for (var i = 0; i < data.blogs.length; i++) {
+							following.push(data.blogs[i]);
+							following_index++;
+						}
+						whilst_back();
+					});
+				},
+				function (err) {
+					if (err) {
+						return console.log (err);
+					}
+					fs.writeFile("following.dat", JSON.stringify(following), function () {console.log ("written"); series_back(null, 'loop de loop'); });
+				}
+			);
+		}],
+		function (err, results) {
+			if (err) {
+				return console.log (err);
+			}
+			console.log (following.length);
+			console.log (results);
+		}
+	);
 }
 
 var displayPost = function (Post, callback) {
@@ -505,4 +559,5 @@ var displayGif = function (filename, callback) {
 	disp.on('close', callback);
 }
 
-initDash();
+//initDash();
+getFollowing();
