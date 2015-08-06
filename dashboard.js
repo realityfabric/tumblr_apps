@@ -64,7 +64,7 @@ var getInfo = function () {
 	});
 }
 
-var getFollowing = function () {
+var getFollowing = function (callback) {
 	var total_blogs;
 	var following_index = 0;
 	
@@ -113,6 +113,41 @@ var getFollowing = function () {
 			}
 			//console.log (following.length);
 			//console.log (results);
+			callback();
+		}
+	);
+}
+
+var getPosts = function (callback) {
+	var posts = [];
+	var followingindex = 0;
+	console.log (following.length);
+	async.whilst(
+		function () { return followingindex < following.length; },
+		function (whilst_back) {
+			var url = following[followingindex].name + ".tumblr.com";
+			client.posts(url, { limit: 1, offset: 0, reblog_info: true, notes_info: true }, function (err, data) {
+				if (err) {
+					return console.log (err);
+				}
+				posts.push (data.posts[0]);
+				followingindex++;
+				whilst_back();
+			});
+		},
+		function (err) {
+			if (err) {
+				return console.log (err);
+			}
+			posts.sort(function (a,b) {
+				return b.timestamp - a.timestamp;
+			});
+			
+			for (var i = 0; i < posts.length; i++) {
+				console.log (posts[i].timestamp);
+			}
+			console.log (posts.length);
+			callback();
 		}
 	);
 }
@@ -560,4 +595,14 @@ var displayGif = function (filename, callback) {
 }
 
 //initDash();
-getFollowing();
+async.series([
+	function (series_back) {
+		getFollowing(function () {series_back (null, 'one'); });
+	},
+	function (series_back) {
+		getPosts(function () {series_back (null, 'two'); });
+	}],
+	function (err, results) {
+		
+	}
+);
