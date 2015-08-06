@@ -103,7 +103,7 @@ var getFollowing = function () {
 					if (err) {
 						return console.log (err);
 					}
-					fs.writeFile("following.dat", JSON.stringify(following), function () {console.log ("written"); series_back(null, 'loop de loop'); });
+					series_back(null, 'continuation');
 				}
 			);
 		}],
@@ -111,8 +111,8 @@ var getFollowing = function () {
 			if (err) {
 				return console.log (err);
 			}
-			console.log (following.length);
-			console.log (results);
+			//console.log (following.length);
+			//console.log (results);
 		}
 	);
 }
