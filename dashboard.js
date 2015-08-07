@@ -77,6 +77,35 @@ var displayPost = function (Post, callback) {
 			console.log (htmlToText.fromString(Post.answer)); //is there a way to see who answered the question? might need a workaround
 			break;
 			
+		case "audio":
+			if (Post.audio_type === "tumblr") {
+				var uri = "https://a.tumblr.com/" + Post.audio_url.slice(Post.audio_url.indexOf("tumblr_")) + "o1.mp3";
+				var filename = "./cache/" + uri.replace("https://a.tumblr.com/", "");
+				
+				console.log (Post.track_name + " by " + Post.artist);
+				console.log (Post.caption);
+				
+				async.series ([
+					function (series_back) {
+						var filetest = safeReadFile.readFileSync(filename);
+						if (filetest === undefined || filetest === "") {
+							download (uri, filename, series_back);
+						} else {
+							series_back ();
+						}
+					},
+					function (series_back) {
+						playAudio (filename, series_back);
+					}],
+					function (err, results) {
+						
+					}
+				);
+			} else {
+				console.log ("Audio Format Not Supported");
+			}
+			break;
+			
 		case "chat":
 			if (Post.title !== null && Post.title != undefined && Post.title !== "") {
 				console.log (Post.title);
@@ -503,6 +532,11 @@ var displayImageSet = function (fileArray, callback) {
 var displayGif = function (filename, callback) {
 	var disp = child_process.spawn("animate", [filename]);
 	disp.on('close', callback);
+}
+
+var playAudio = function (filename, callback) {
+	var play = child_process.spawn("rhythmbox", [filename]);
+	play.on('close', callback);
 }
 
 initDash();
