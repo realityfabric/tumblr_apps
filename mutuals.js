@@ -4,13 +4,20 @@
  ************************************************/
 
 // Authenticate via OAuth
-var tumblr = require('tumblr');
+var tumblr = require('tumblr.js');
 var async = require('async');
 var underscore = require('underscore');
 
 var t_app = require('./main');
 
-var blogurl = [blog url]; //needs to automatically produce blog url, for now user must insert into code
+t_app.client.userInfo(function (err, data) {
+    if (err) {
+		return console.log(err);
+	} else {
+		blogurl = data.user.name;
+		f1();
+	}
+});
 
 var count = 0;
 var Max = 0;
@@ -93,5 +100,3 @@ function f3 () {
     console.log(arr);
 }
 
-
-f1 ();
