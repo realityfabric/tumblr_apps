@@ -1,8 +1,3 @@
-
-/************************************************
- *  USE ASYNC JUST... FUCKING... DON'T DO THIS  *
- ************************************************/
-
 // Authenticate via OAuth
 var tumblr = require('tumblr.js');
 var async = require('async');
