@@ -29,7 +29,7 @@ you will also need your own api keys:
 
 in t_client.js place this code
 ```
-var tumblr = require('tumblr');
+var tumblr = require('tumblr.js');
 var module = require('module');
 
 var client = tumblr.createClient({
