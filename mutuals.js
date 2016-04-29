@@ -10,7 +10,7 @@ t_app.client.userInfo(function (err, data) {
 		return console.log(err);
 	} else {
 		blogurl = data.user.name;
-		f1();
+		gatherFollowing();
 	}
 });
 
@@ -22,7 +22,7 @@ var count2 = 0;
 var Max2 = 0;
 var flwng = [];
 
-function f1 () {
+function gatherFollowing () {
 	//gather following list
 	async.doWhilst(
 		function (whilstcallback) {
@@ -44,12 +44,12 @@ function f1 () {
 			console.log('FOLLOWING LIST COMPLETE');
 			flwrs.sort()
 			console.log('FOLLOWING LIST SORTED');
-			f2();
+			gatherFollowers();
 		}
 	);
 }
 
-function f2 (doafter) {
+function gatherFollowers (doafter) {
 	//gather follower list
 	async.doWhilst(
 		function (whilstcallback) {
@@ -76,13 +76,8 @@ function f2 (doafter) {
 			console.log('FOLLOWER LIST COMPLETE');
 			flwng.sort()
 			console.log('FOLLOWER LIST SORTED');
-			f3();
+			console.log(underscore.intersection(flwng,flwrs));
 		}
 	);
-}
-
-function f3 () {
-    var arr = underscore.intersection(flwng, flwrs);
-    console.log(arr);
 }
 
