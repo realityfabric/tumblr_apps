@@ -1,9 +1,3 @@
-/****************************************************************
- *                                                              *
- *  THIS IS  A FUCKING MESS, ABSTRACTIFY FOR THE LOVE OF GOD    *
- *                                                              *
- ****************************************************************/
-
 var t_app = require('./main.js');
 var async = require('async');
 var moment = require('moment');
@@ -73,7 +67,7 @@ var checkLimit = function (url, cb) {
 
     async.doWhilst(
         function (callback) {
-            client.posts(url, { offset: count }, function (err, data) {
+            client.blogPosts(url, { offset: count }, function (err, data) {
                 if (data.total_posts > 0) {
                     if (Max === 0) { 
                         Max = data.total_posts;

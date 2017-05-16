@@ -22,7 +22,7 @@ var checkLimit = function (url, num, cb) {
 
     async.doWhilst(
         function (callback) {
-            client.posts(url, { offset: count }, function (err, data) {
+            client.blogPosts(url, { offset: count }, function (err, data) {
                 if (data.total_posts > 0) {
                     if (Max === 0) { 
                         Max = data.total_posts;
@@ -68,7 +68,7 @@ var getPosts = function (url, tagged, arr, cb) {
 
     async.doWhilst(
         function (callback) {
-            client.posts(url, { tag: tagged, offset: count }, function (err, data) {
+            client.blogPosts(url, { tag: tagged, offset: count }, function (err, data) {
                 if (err) {
                     console.log (err);
                 }

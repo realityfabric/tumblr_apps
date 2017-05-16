@@ -24,7 +24,7 @@ if (process.argv[2] != null) {
 if (errflag) {
 	console.log ("Format is: nodejs posts.js [blogname] '[post body]' '[comma separated list of tags]'");
 } else {
-		t_app.client.text(Blog, {  body: Body,
+		t_app.client.createTextPost(Blog, {  body: Body,
 									tweet: 'off',
 									format: 'markdown',
 									tags: Tags}, function (err, success) {

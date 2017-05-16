@@ -25,7 +25,7 @@ function gatherFollowing () {
 	//gather following list
 	async.doWhilst(
 		function (whilstcallback) {
-			t_app.client.following ({offset: count}, function (err, data) {
+			t_app.client.userFollowing ({offset: count}, function (err, data) {
 				if (Max === 0) {
 					Max = data.total_blogs;
 				}
@@ -52,7 +52,7 @@ function gatherFollowers (doafter) {
 	//gather follower list
 	async.doWhilst(
 		function (whilstcallback) {
-			t_app.client.followers(blogurl, { offset: count2 }, function (err, data) {
+			t_app.client.blogFollowers(blogurl, { offset: count2 }, function (err, data) {
 				if (err) {
 					console.log (err);
 				}

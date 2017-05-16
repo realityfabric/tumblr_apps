@@ -22,7 +22,7 @@ var userInfo = {};
 var initDash = function () {
 	console.log('\033[2J'); //clears the screen
 	count = 0; index = 0; postarray = []; previds = [];
-	client.dashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
+	client.userDashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
 		if (err) {return console.log (err);}
 		
 		postarray = data.posts;
@@ -36,7 +36,7 @@ var initDash = function () {
 var dashNext = function () {
 	index++; count++;
 	if (index === 20) { //get the next postarray from the server
-		client.dashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
+		client.userDashboard({ limit: 20, offset: count, reblog_info: true, notes_info: true }, function (err, data) {
 			index = 0;
 			postarray = data.posts;
 			
@@ -256,7 +256,7 @@ var displayPost = function (Post, callback) {
 }
 
 var likePost = function (Post) {
-	client.like(Post.id, Post.reblog_key, function (err, data) {
+	client.likePost(Post.id, Post.reblog_key, function (err, data) {
 		if (err) {
 			return console.log (err);
 		}
@@ -267,7 +267,7 @@ var likePost = function (Post) {
 }
 
 var unlikePost = function (Post) {
-	client.unlike(Post.id, Post.reblog_key, function (err, data) {
+	client.unlikePost(Post.id, Post.reblog_key, function (err, data) {
 		if (err) {
 			return console.log (err);
 		}
@@ -283,7 +283,7 @@ var reblogPost = function (Post) {
 			return console.log (err);
 		}
 		
-		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags}, function (err, data) {
+		client.reblogPost(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags}, function (err, data) {
 			if (err) {
 				return console.log (err);
 			}
@@ -300,7 +300,7 @@ var queuePost = function (Post) {
 			return console.log (err);
 		}
 		
-		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags, state: 'queue' }, function (err, data) {
+		client.reblogPost(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags, state: 'queue' }, function (err, data) {
 			if (err) {
 				return console.log (err);
 			}
@@ -317,7 +317,7 @@ var draftPost = function (Post) {
 			return console.log (err);
 		}
 		
-		client.reblog(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags, state: 'draft' }, function (err, data) {
+		client.reblogPost(result.blog, { id: Post.id, reblog_key: Post.reblog_key, comment: result.comment, tags: result.tags, state: 'draft' }, function (err, data) {
 			if (err) {
 				return console.log (err);
 			}
@@ -334,7 +334,7 @@ var makePost = function (Post) {
 			console.log (err);
 			commandGet(Post);
 		} else {
-			client.text(result.blog, {  
+			client.createTextPost(result.blog, {  
 				title: result.title,
 				body: result.body,
 				tags: result.tags
