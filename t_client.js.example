@@ -1,0 +1,9 @@
+var client = require('tumblr.js').createClient({
+  consumer_key: 'xxxxxxxxxx',
+  consumer_secret: 'xxxxxxxxxx',
+  token: 'xxxxxxxxxx',
+  token_secret: 'xxxxxxxxxx'
+});
+var module = require('module');
+
+exports.client = client;
