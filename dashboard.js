@@ -5,8 +5,7 @@ var request = require('request');
 var child_process = require('child_process');
 var prompt = require('prompt');
 var htmlToText = require('html-to-text');
-var t_app = require('./main');
-var client = t_app.client; //lazy
+var client = require('./main').client;
 
 prompt.message = ">";
 

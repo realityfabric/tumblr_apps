@@ -3,12 +3,8 @@ var fs = require('fs');
 var module = require('module');
 var moment = require('moment');
 var safeReadFile = require('safe-readfile');
-var tumblr = require('tumblr.js');
 var underscore = require('underscore');
-
-var t_client = require('./t_client.js');
-
-var client = t_client.client;
+var client = require('./t_client.js').client;
 
 //returns number of posts made by a blog since last reset
 var checkLimit = function (url, num, cb) {

@@ -2,9 +2,9 @@ var tumblr = require('tumblr.js');
 var async = require('async');
 var underscore = require('underscore');
 
-var t_app = require('./main');
+var client = require('./main').client;
 
-t_app.client.userInfo(function (err, data) {
+client.userInfo(function (err, data) {
     if (err) {
 		return console.log(err);
 	} else {
@@ -25,7 +25,7 @@ function gatherFollowing () {
 	//gather following list
 	async.doWhilst(
 		function (whilstcallback) {
-			t_app.client.userFollowing ({offset: count}, function (err, data) {
+			client.userFollowing ({offset: count}, function (err, data) {
 				if (Max === 0) {
 					Max = data.total_blogs;
 				}
@@ -52,7 +52,7 @@ function gatherFollowers (doafter) {
 	//gather follower list
 	async.doWhilst(
 		function (whilstcallback) {
-			t_app.client.blogFollowers(blogurl, { offset: count2 }, function (err, data) {
+			client.blogFollowers(blogurl, { offset: count2 }, function (err, data) {
 				if (err) {
 					console.log (err);
 				}

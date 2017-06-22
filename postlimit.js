@@ -1,8 +1,6 @@
-var t_app = require('./main.js');
+var client = require('./main.js').client;
 var async = require('async');
 var moment = require('moment');
-
-var client = t_app.client; //lazy
 
 var urls = [];
 var num = 0;
@@ -10,7 +8,7 @@ var num = 0;
 async.series([
     function(callback){
         console.log ("Acquiring URLs");
-        t_app.client.userInfo(function (err, data) {
+        client.userInfo(function (err, data) {
             var i = 0;
             while ( data.user.blogs[i] != undefined ) {     
                 urls.push(data.user.blogs[i].name + ".tumblr.com");

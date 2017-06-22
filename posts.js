@@ -1,4 +1,4 @@
-var t_app = require('./main');
+var client = require('./main').client;
 
 var Blog = "";
 var Body = "";
@@ -24,7 +24,7 @@ if (process.argv[2] != null) {
 if (errflag) {
 	console.log ("Format is: nodejs posts.js [blogname] '[post body]' '[comma separated list of tags]'");
 } else {
-		t_app.client.createTextPost(Blog, {  body: Body,
+		client.createTextPost(Blog, {  body: Body,
 									tweet: 'off',
 									format: 'markdown',
 									tags: Tags}, function (err, success) {
