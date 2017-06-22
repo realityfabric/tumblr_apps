@@ -1,4 +1,4 @@
-var tumblr = require('./t_client.js').client;
+var tumblr = require('./tumblr_client.js').client;
 var module = require('module');
 
 var TumblrAPIWrapper = {
