@@ -1,4 +1,3 @@
-var tumblr = require('tumblr.js');
 var async = require('async');
 var underscore = require('underscore');
 
