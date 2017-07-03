@@ -26,7 +26,7 @@ var checkLimit = function (url, num, cb) {
                                     
                     for (var i = 0; i < 20; i++)
                     {
-                        if (data.posts != undefined && i < (Max - count)) 
+                        if (data.posts !== undefined && i < (Max - count)) 
                         {
                             if (data.posts[i].timestamp > date) {
                                 arr.push (data.posts[i].timestamp);
@@ -75,7 +75,7 @@ var getPosts = function (url, tagged, arr, cb) {
                         }
 
                         for (var i = 0; i < 20; i++) {
-                            if (data.posts[i] != undefined) {
+                            if (data.posts[i] !== undefined) {
                                 arr.push(data.posts[i]);
                             }
                             count++;
@@ -117,12 +117,12 @@ var deletePosts = function (url, tagged, not_tagged, older_than, cb) {
                 function () { return count < arr.length; },
                 function (callback1) {
 
-                    while (arr[count] != undefined && (arr[count].tags.indexOf(not_tagged) > -1 || arr[count].timestamp > older_than))
+                    while (arr[count] !== undefined && (arr[count].tags.indexOf(not_tagged) > -1 || arr[count].timestamp > older_than))
                     {
                         count++;
                     }
 
-                    if (arr[count] != undefined) {
+                    if (arr[count] !== undefined) {
                         client.deletePost(url, arr[count].id, function (err, data) {
                             if (err) {
                                 console.log (err);
@@ -185,7 +185,7 @@ var backupPosts = function (url, tagged, arr, cb) {
 
             var str = JSON.stringify(unique);
 
-            if (arr.length != 0) {
+            if (arr.length !== 0) {
                 fs.writeFile(filename, str, function(err) {
                     if(err) {
                         return console.log(err);
@@ -267,7 +267,7 @@ var create = function (filename, arr) {
                 str = str + "<div class='undefined_post'>";
         }        
         str = str + "\n";
-        if (arr[i].title != null) { //if there is a title, wrap it in a div class post_title
+        if (arr[i].title !== null) { //if there is a title, wrap it in a div class post_title
             str = str + "<div class='post_title'>\n" + arr[i].title + "\n</div> <!-- end div post_title -->\n";
         }
         str = str + "\t\t\t\t<div class='post_body'>\n\t\t\t\t\t" + arr[i].body + "\n\t\t\t\t</div> <!-- end div post_body -->\n"; //wrap the body of the post in post_body
