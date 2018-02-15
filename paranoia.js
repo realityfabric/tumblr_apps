@@ -9,7 +9,9 @@ var tagarr = [];
 var ta_index = 0;
 //tag to not delete
 var tagsave = "misc";
-var blogname = process.argv[2]; // argv[0] = "nodejs", argv[1] = "paranoia.js", argv[2] = blogname; ( > nodejs paranoia.js blogname )
+
+// argv[0] = "nodejs", argv[1] = "paranoia.js", argv[2] = blogname; ( > nodejs paranoia.js blogname )
+var blogname = process.argv[2];
 var url = blogname + ".tumblr.com";
 
 var paranoia_runtime = 0;
@@ -18,7 +20,7 @@ async.forever(
     function(next) {
         console.log ("running paranoia");
 
-        paranoia (function() {
+        paranoia (30, function() {
             console.log ("paranoia.js has run " + ++paranoia_runtime + " times."); 
             console.log ("it is " + moment().format("dddd, MMMM Do YYYY, h:mm:ss a"));
             setTimeout(next,900000); //repeats loop every 15 minutes
@@ -30,7 +32,13 @@ async.forever(
     }
 );
 
-function paranoia (call_back) {
+/**
+ * Deletes posts older than the 'days' argument
+ *
+ * days - number of most recent days to save (all else will be deleted)
+ * call_back - a callback function
+ */
+function paranoia (days, call_back) {
     async.whilst ( //back up tags
         function () { return ta_index < tagarr.length; },
         function (callback) { 
@@ -42,8 +50,8 @@ function paranoia (call_back) {
             if (err) {
                 console.log (err);
             }
-            else {//delete posts older than 24 hours
-                t_app.deletePosts (url, undefined, tagsave, moment().subtract(1,'day').utc().unix(), call_back);
+            else {//delete posts older than the number of days in the 'days' argument
+                t_app.deletePosts (url, undefined, tagsave, moment().subtract(days,'day').utc().unix(), call_back);
             }
         }
     );
