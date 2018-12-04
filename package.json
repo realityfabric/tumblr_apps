@@ -1,0 +1,22 @@
+{
+  "name": "tumblr_apps",
+  "version": "1.0.0",
+  "description": "An app to manage your Tumblr Blog",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/realityfabric/tumblr_apps.git"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/realityfabric/tumblr_apps/issues"
+  },
+  "homepage": "https://github.com/realityfabric/tumblr_apps#readme",
+  "dependencies": {
+    "npm": "^6.4.1"
+  }
+}
