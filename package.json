@@ -12,6 +12,7 @@
   },
   "author": "",
   "license": "UNLICENSED",
+  "private": true,
   "bugs": {
     "url": "https://github.com/realityfabric/tumblr_apps/issues"
   },
