@@ -17,7 +17,18 @@
     "url": "https://github.com/realityfabric/tumblr_apps/issues"
   },
   "homepage": "https://github.com/realityfabric/tumblr_apps#readme",
-  "dependencies": {
+  "dependencies":
+  {
     "npm": "^6.4.1"
+  , "async": "latest"
+  , "fs": "latest"
+  , "module": "latest"
+  , "moment": "latest"
+  , "safe-readfile": "latest"
+  , "underscore": "latest"
+  , "prompt": "latest"
+  , "html-to-text": "latest"
+  , "request": "latest"
+  , "tumblr.js": "git://github.com/tumblr/tumblr.js.git"
   }
 }

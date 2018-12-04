@@ -10,16 +10,7 @@ Dependencies installation:
 ```
 > cd /path/to/project/directory
 > mkdir backups htmls cache
-> npm install async fs module moment safe-readfile underscore prompt html-to-text request
-> cd node_modules
-> git clone https://github.com/tumblr/tumblr.js.git
-> cd tumblr.js
 > npm install
-```
-
-If you just want to copy and paste this into the terminal all at once, first create the project directory and then:
-```
-> mkdir backups htmls cache; npm install async fs module moment safe-readfile underscore prompt html-to-text request; cd node_modules; git clone https://github.com/tumblr/tumblr.js.git; cd tumblr.js; npm install
 ```
 
 Note that the directories "./backups" and "./htmls" are required for some functions to run.
